@@ -2,7 +2,8 @@
 import { useRouter } from 'next/navigation';
 import { ChangeEvent, FormEvent, useState } from "react"
 import TextInput from "../../../../ui/inputs/TextInput"
-import {CldUploadButton} from 'next-cloudinary';
+// @ts-ignore
+import {CldUploadButton} from 'next-cloudinary'; 
 function CreateForm({ categories }: any) {
 
     const router = useRouter();

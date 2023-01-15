@@ -1,3 +1,4 @@
+// @ts-ignore
 import {CldImage} from 'next-cloudinary';
 import React  from 'react';
 function CloudinaryImage({
