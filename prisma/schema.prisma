@@ -11,43 +11,73 @@ datasource db {
 }
 
 model Category {
-  id   Int    @id @default(autoincrement())
-  name String
-
-  blogs CategoriesOnBLog[]
+  id       Int                @id @default(autoincrement())
+  serial   Int?
+  name     String
+  slug     String
+  parentId Int?
+  parent   Category?          @relation("ParentChilds", fields: [parentId], references: [id])
+  childs   Category[]         @relation("ParentChilds")
+  posts    CategoriesOnPost[]
 }
 
-model CategoriesOnBLog {
-  blog       Blog     @relation(fields: [blogId], references: [id])
-  blogId     Int // relation scalar field (used in the `@relation` attribute above)
+model CategoriesOnPost {
+  post       Post     @relation(fields: [postId], references: [id])
+  postId     Int // relation scalar field (used in the `@relation` attribute above)
   category   Category @relation(fields: [categoryId], references: [id])
   categoryId Int // relation scalar field (used in the `@relation` attribute above)
 
-  @@id([blogId, categoryId])
+  @@id([postId, categoryId])
 }
 
-model TagsOnBLog {
-  blog   Blog @relation(fields: [blogId], references: [id])
-  blogId Int // relation scalar field (used in the `@relation` attribute above)
+model TagsOnPost {
+  post   Post @relation(fields: [postId], references: [id])
+  postId Int // relation scalar field (used in the `@relation` attribute above)
   tag    Tag  @relation(fields: [tagId], references: [id])
   tagId  Int // relation scalar field (used in the `@relation` attribute above)
 
-  @@id([blogId, tagId])
+  @@id([postId, tagId])
 }
 
 model Tag {
   id    Int          @id @default(autoincrement())
   name  String
-  blogs TagsOnBLog[]
+  posts TagsOnPost[]
 }
 
-model Blog {
-  id          Int     @id @default(autoincrement())
-  title       String
-  description String
-  image       String?
+model Post {
+  id              Int                @id @default(autoincrement())
+  title           String
+  description     String
+  viewed          Int                @default(0)
+  metaDescription String
+  image           String?
+  slug            String
+  tags            TagsOnPost[]
+  type            String?
+  createdAt       DateTime           @default(now()) @map(name: "created_at")
+  updatedAt       DateTime           @updatedAt @map(name: "updated_at")
+  categories      CategoriesOnPost[]
+  comments        PostComment[]
+}
 
-  tags TagsOnBLog[]
+model User {
+  id        Int      @id @default(autoincrement())
+  userName  String
+  email     String
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @updatedAt @map(name: "updated_at")
+}
 
-  categories CategoriesOnBLog[]
+model PostComment {
+  id        Int           @id @default(autoincrement())
+  comment   String
+  image String?
+  postId    Int
+  product   Post?         @relation(fields: [postId], references: [id])
+  parentId  Int?
+  parent    PostComment?  @relation("ParentChilds", fields: [parentId], references: [id])
+  childs    PostComment[] @relation("ParentChilds")
+  createdAt DateTime      @default(now()) @map(name: "created_at")
+  updatedAt DateTime      @updatedAt @map(name: "updated_at")
 }
