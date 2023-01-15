@@ -21,7 +21,7 @@ async function Home() {
 <div className='p-4 flex'>
       {posts.map(post=><div key={post.id} className="m-2 max-w-sm bg-white border border-gray-200 rounded-lg shadow-md dark:bg-gray-800 dark:border-gray-700">
     <a href="#">
-        <img className="rounded-t-lg" src={post.image} alt="" />
+        <img className="rounded-t-lg" src={post.image!} alt="" />
     </a>
     <div className="p-5">
         <a href="#">
