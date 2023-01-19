@@ -1,6 +1,9 @@
 import './globals.css'
 import SupabaseListener from '../components/supabase-listener'
 import createClient from '../utils/supabase-server'
+// export const revalidate = 60;
+// export const dynamic='force-static';
+
 export default async function RootLayout({
   children,
 }: {
