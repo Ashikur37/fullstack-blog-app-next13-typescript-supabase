@@ -4,10 +4,14 @@ import { Post } from '@prisma/client';
 import Link from 'next/link';
 
 // export const revalidate = 60;
-// export const dynamic='force-static';
+export const dynamic='error';
 async function getData() {
     const res = await fetch('http://localhost:3000/api/post/list'
-    , { next: { revalidate: 60 } });
+    // , { next: { revalidate: 60 } }
+    ,{
+        cache:'force-cache'
+    }
+    );
     return res.json();
   }
   
